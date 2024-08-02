@@ -42,6 +42,8 @@ jobs:
             type=ref,event=tag,priority=600
             # stable (i.e. 2.36)
             type=match,pattern=[^\+]+,priority=500
+            # master
+            type=ref,event=branch,priority=400
 
       - name: Build and Push
         uses: docker/build-push-action@v6
