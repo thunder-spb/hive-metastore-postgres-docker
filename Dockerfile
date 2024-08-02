@@ -13,7 +13,7 @@ ARG HIVE_METASTORE_VERSION=3.0.0
 ARG POSTGRESQL_JDBC_VERSION=42.2.16
 
 RUN apt-get update \
-  && apt-get install -y curl=7.64.0-4+deb10u1 --no-install-recommends \
+  && apt-get install -y curl --no-install-recommends \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
