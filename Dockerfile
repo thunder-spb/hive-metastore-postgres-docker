@@ -8,9 +8,15 @@ LABEL hadoop-version="3.2.0"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+ARG TARGETOS
+ARG TARGETARCH
+
 ARG HADOOP_VERSION=3.2.0
 ARG HIVE_METASTORE_VERSION=3.0.0
 ARG POSTGRESQL_JDBC_VERSION=42.2.16
+ARG GOTEMPLATE_VERSION=3.6.0
 
 RUN apt-get update \
   && apt-get install -y curl --no-install-recommends \
@@ -18,7 +24,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # Install Gomplate
-RUN curl -sfSL https://github.com/hairyhenderson/gomplate/releases/download/v3.6.0/gomplate_linux-amd64 -o /usr/local/bin/gomplate \
+RUN curl -sfSL https://github.com/hairyhenderson/gomplate/releases/download/v${GOTEMPLATE_VERSION}/gomplate_${TARGETOS}-${TARGETARCH} -o /usr/local/bin/gomplate \
   && chmod 755 /usr/local/bin/gomplate
 
 # Set Hadoop/HiveMetastore variables and Classpath
