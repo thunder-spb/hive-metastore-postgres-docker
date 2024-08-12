@@ -53,8 +53,6 @@ RUN curl -s http://apache.uvigo.es/hive/hive-standalone-metastore-${HIVE_METASTO
 # Add jars to the Hive Metastore classpath
 RUN cp ${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-aws* ${METASTORE_HOME}/lib/ \
   && cp ${HADOOP_HOME}/share/hadoop/tools/lib/aws-java-sdk* ${METASTORE_HOME}/lib/ \
-  && curl -L  https://repo1.maven.org/maven2/org/apache/hive/hive-exec/3.1.3/hive-exec-3.1.3.jar -o \
-  ${METASTORE_HOME}/lib/hive-exec-3.1.3.jar \
   && curl -L https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-web/2.17.2/log4j-web-2.17.2.jar -o \
   ${METASTORE_HOME}/lib/log4j-web-2.17.2.jar
 
