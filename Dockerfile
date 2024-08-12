@@ -54,15 +54,15 @@ RUN curl -s http://apache.uvigo.es/hive/hive-standalone-metastore-${HIVE_METASTO
 RUN cp ${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-aws* ${METASTORE_HOME}/lib/ \
   && cp ${HADOOP_HOME}/share/hadoop/tools/lib/aws-java-sdk* ${METASTORE_HOME}/lib/ \
   && curl -L  https://repo1.maven.org/maven2/org/apache/hive/hive-exec/3.1.3/hive-exec-3.1.3.jar -o \
-  /opt/apache-hive-metastore-${METASTORE_VERSION}-bin/lib/hive-exec-3.1.3.jar \
+  ${METASTORE_HOME}/lib/hive-exec-3.1.3.jar \
   && curl -L https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-web/2.17.2/log4j-web-2.17.2.jar -o \
-  /opt/apache-hive-metastore-${METASTORE_VERSION}-bin/lib/log4j-web-2.17.2.jar
+  ${METASTORE_HOME}/lib/log4j-web-2.17.2.jar
 
 # Download and install the postgres connector used by HiveMetastore
 ## TODO: do not chmod 775!
-RUN curl -s https://jdbc.postgresql.org/download/postgresql-${POSTGRESQL_JDBC_VERSION}.jar -o postgresql-${POSTGRESQL_JDBC_VERSION}.jar && mv postgresql-${POSTGRESQL_JDBC_VERSION}.jar /opt/postgresql-jdbc.jar \
-  && cp /opt/postgresql-jdbc.jar ${HADOOP_HOME}/share/hadoop/common/lib/ && chmod -R 775 ${HADOOP_HOME}/share/hadoop/common/lib/* \
-  && cp /opt/postgresql-jdbc.jar ${METASTORE_HOME}/lib/ && chmod -R 775 ${METASTORE_HOME}/lib/*
+RUN curl -L https://jdbc.postgresql.org/download/postgresql-${POSTGRESQL_JDBC_VERSION}.jar -o /opt/postgresql-${POSTGRESQL_JDBC_VERSION}.jar \
+  && cp /opt/postgresql-*.jar ${HADOOP_HOME}/share/hadoop/common/lib/ && chmod -R 775 ${HADOOP_HOME}/share/hadoop/common/lib/* \
+  && cp /opt/postgresql-*.jar ${METASTORE_HOME}/lib/ && chmod -R 775 ${METASTORE_HOME}/lib/*
 
 COPY entrypoint.sh ${METASTORE_HOME}/bin/
 RUN chmod 775 ${METASTORE_HOME}/bin/entrypoint.sh
