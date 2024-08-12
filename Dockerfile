@@ -27,6 +27,9 @@ RUN apt-get update \
 RUN curl -sfSL https://github.com/hairyhenderson/gomplate/releases/download/v${GOTEMPLATE_VERSION}/gomplate_${TARGETOS}-${TARGETARCH} -o /usr/local/bin/gomplate \
   && chmod 755 /usr/local/bin/gomplate
 
+WORKDIR /opt
+COPY metastore-log4j2.properties .
+
 # Set Hadoop/HiveMetastore variables and Classpath
 ENV HADOOP_HOME="/opt/hadoop"
 ENV METASTORE_HOME="/opt/hive-metastore"
@@ -49,7 +52,11 @@ RUN curl -s http://apache.uvigo.es/hive/hive-standalone-metastore-${HIVE_METASTO
   && ln -s /opt/apache-hive-metastore-${HIVE_METASTORE_VERSION}-bin ${METASTORE_HOME}
 # Add jars to the Hive Metastore classpath
 RUN cp ${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-aws* ${METASTORE_HOME}/lib/ \
-  && cp ${HADOOP_HOME}/share/hadoop/tools/lib/aws-java-sdk* ${METASTORE_HOME}/lib/
+  && cp ${HADOOP_HOME}/share/hadoop/tools/lib/aws-java-sdk* ${METASTORE_HOME}/lib/ \
+  && curl -L  https://repo1.maven.org/maven2/org/apache/hive/hive-exec/3.1.3/hive-exec-3.1.3.jar -o \
+  /opt/apache-hive-metastore-${METASTORE_VERSION}-bin/lib/hive-exec-3.1.3.jar \
+  && curl -L https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-web/2.17.2/log4j-web-2.17.2.jar -o \
+  /opt/apache-hive-metastore-${METASTORE_VERSION}-bin/lib/log4j-web-2.17.2.jar
 
 # Download and install the postgres connector used by HiveMetastore
 ## TODO: do not chmod 775!
